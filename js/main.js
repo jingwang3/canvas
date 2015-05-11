@@ -1,3 +1,5 @@
+$(document).ready(function(){
+
 var canvas, stage;
 
 var mouseTarget;  // the display object currently under the mouse, or being dragged
@@ -5,8 +7,9 @@ var dragStarted;  // indicates whether we are currently in a drag operation
 var offset;
 var update = true;
 
-function init() {
+var init = function() {
   // create stage and point it to the canvas:
+  $('#myCanvas').attr('width', 855).attr('height', 605); //set canvas size
   canvas = document.getElementById("myCanvas");
   stage = new createjs.Stage(canvas);
 
@@ -18,30 +21,53 @@ function init() {
   stage.mouseMoveOutside = true; // keep tracking the mouse even when it leaves the canvas
 
   // load the source image:
-  var smileyFace = new Image();
-  smileyFace.src = "img/b_cake.png";
-  smileyFace.onload = handleImageLoad(smileyFace, 'bCake', 0, 0);
-  console.log(stage);
-}
+  var bdCake = new Image();
+  bdCake.src = "img/b_cake.png";
+  var cakeBmp;
+
+    cakeBmp = new createjs.Bitmap(bdCake);
+    stage.addChild(cakeBmp);
+    cakeBmp.x = 0;
+    cakeBmp.y = 0;
+    cakeBmp.name = 'BD_Cake';
+
+  createjs.Ticker.addEventListener("tick", tick);
+}();
 
 function stop() {
   createjs.Ticker.removeEventListener("tick", tick);
 }
 
-function handleImageLoad(img, title, posX, posY) {
+function loadStillImg(img, title, posX, posY) {
+  var bitmap;
+
+    bitmap = new createjs.Bitmap(img);
+    stage.addChild(bitmap);
+    bitmap.x = posX | 0;
+    bitmap.y = posY | 0;
+    bitmap.name = title;
+
+  createjs.Ticker.addEventListener("tick", tick);
+}
+
+
+var addCandy = function(imgSrc) {
+  var img = new Image();
+  img.src = imgSrc;
   var bitmap;
 
   // create and populate the screen with random daisies:
   //for (var i = 0; i < 3; i++) {
     bitmap = new createjs.Bitmap(img);
     stage.addChild(bitmap);
-    bitmap.x = posX | 0;
-    bitmap.y = posY | 0;
+    console.log(stage);
+    bitmap.x = 0;
+    bitmap.y = 0;
     // bitmap.rotation = 360 * Math.random() | 0;
     // bitmap.regX = bitmap.image.width / 2 | 0;
     // bitmap.regY = bitmap.image.height / 2 | 0;
-    // bitmap.scaleX = bitmap.scaleY = bitmap.scale = Math.random() * 0.4 + 0.6;
-    bitmap.name = title;
+    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+    bitmap.name = 'candy_'+stage.children.length;
     bitmap.cursor = "pointer";
 
     // using "on" binds the listener to the scope of the currentTarget by default
@@ -72,12 +98,21 @@ function handleImageLoad(img, title, posX, posY) {
   //}
 
   createjs.Ticker.addEventListener("tick", tick);
+  update = true;
 }
 
 function tick(event) {
   // this set makes it so the stage only re-renders when an event handler indicates a change has happened.
-  if (update) {
-    update = false; // only update once
+   if (update) {
+     update = false; // only update once
     stage.update(event);
-  }
+   }
 }
+
+$('.add-candy-btn').on('click', function(e){
+  addCandy(this.src);
+});
+
+
+})
+
