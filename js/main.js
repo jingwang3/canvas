@@ -1,54 +1,3 @@
-// var convertImageToCanvas = function(image) {
-//   var canvas = document.createElement("canvas");
-//   canvas.width = image.width;
-//   canvas.height = image.height;
-//   canvas.getContext("2d").drawImage(image, 0, 0);
-//   return canvas;
-// }
-
-// var addSmileyFace = function(cvs){
-//   var canvas = cvs;
-//   var context = canvas.getContext('2d');
-//   var centerX = canvas.width / 2;
-//   var centerY = canvas.height / 2;
-//   var radius = 70;
-//   var eyeRadius = 10;
-//   var eyeXOffset = 25;
-//   var eyeYOffset = 20;
-  
-//   // draw the yellow circle
-//   context.beginPath();
-//   context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-//   context.fillStyle = 'yellow';
-//   context.fill();
-//   context.lineWidth = 5;
-//   context.strokeStyle = 'black';
-//   context.stroke();
-    
-//   // draw the eyes
-//   context.beginPath();
-//   var eyeX = centerX - eyeXOffset;
-//   var eyeY = centerY - eyeXOffset;
-//   context.arc(eyeX, eyeY, eyeRadius, 0, 2 * Math.PI, false);
-//   var eyeX = centerX + eyeXOffset;
-//   context.arc(eyeX, eyeY, eyeRadius, 0, 2 * Math.PI, false);
-//   context.fillStyle = 'black';
-//   context.fill();
-  
-//   // draw the mouth
-//   context.beginPath();
-//   context.arc(centerX, centerY, 50, 0, Math.PI, false);
-//   context.stroke();
-// };
-
-
-// var createCanvas = function(cvs){
-//   var canvas = document.getElementById(cvs);
-//   addSmileyFace(canvas);
-// }('myCanvas');
-
-
-
 var canvas, stage;
 
 var mouseTarget;  // the display object currently under the mouse, or being dragged
@@ -56,8 +5,7 @@ var dragStarted;  // indicates whether we are currently in a drag operation
 var offset;
 var update = true;
 
-var init = function() {
-  //examples.showDistractor();
+function init() {
   // create stage and point it to the canvas:
   canvas = document.getElementById("myCanvas");
   stage = new createjs.Stage(canvas);
@@ -70,32 +18,30 @@ var init = function() {
   stage.mouseMoveOutside = true; // keep tracking the mouse even when it leaves the canvas
 
   // load the source image:
-  var image = new Image();
-  image.src = "img/purpercandy.png";
-  image.onload = handleImageLoad;
-}();
+  var smileyFace = new Image();
+  smileyFace.src = "img/b_cake.png";
+  smileyFace.onload = handleImageLoad(smileyFace, 'bCake', 0, 0);
+  console.log(stage);
+}
 
 function stop() {
   createjs.Ticker.removeEventListener("tick", tick);
 }
 
-function handleImageLoad(event) {
-  var image = event.target;
+function handleImageLoad(img, title, posX, posY) {
   var bitmap;
-  var container = new createjs.Container();
-  stage.addChild(container);
 
   // create and populate the screen with random daisies:
-  for (var i = 0; i < 3; i++) {
-    bitmap = new createjs.Bitmap(image);
-    container.addChild(bitmap);
-    bitmap.x = canvas.width * Math.random() | 0;
-    bitmap.y = canvas.height * Math.random() | 0;
-    bitmap.rotation = 360 * Math.random() | 0;
-    bitmap.regX = bitmap.image.width / 2 | 0;
-    bitmap.regY = bitmap.image.height / 2 | 0;
-    bitmap.scaleX = bitmap.scaleY = bitmap.scale = Math.random() * 0.4 + 0.6;
-    bitmap.name = "bmp_" + i;
+  //for (var i = 0; i < 3; i++) {
+    bitmap = new createjs.Bitmap(img);
+    stage.addChild(bitmap);
+    bitmap.x = posX | 0;
+    bitmap.y = posY | 0;
+    // bitmap.rotation = 360 * Math.random() | 0;
+    // bitmap.regX = bitmap.image.width / 2 | 0;
+    // bitmap.regY = bitmap.image.height / 2 | 0;
+    // bitmap.scaleX = bitmap.scaleY = bitmap.scale = Math.random() * 0.4 + 0.6;
+    bitmap.name = title;
     bitmap.cursor = "pointer";
 
     // using "on" binds the listener to the scope of the currentTarget by default
@@ -123,9 +69,8 @@ function handleImageLoad(event) {
       update = true;
     });
 
-  }
+  //}
 
-  //examples.hideDistractor();
   createjs.Ticker.addEventListener("tick", tick);
 }
 
