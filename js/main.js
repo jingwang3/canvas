@@ -114,5 +114,31 @@ $('.add-candy-btn').on('click', function(e){
 });
 
 
-})
+//geolocation function scope.
+(function(){
+
+  //attach event listener to findME
+  $('#findMe').on('click', function(){
+    getLocation();
+  });
+
+  //if geolocation is available call showPosition
+  function getLocation() {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+      }
+  }
+
+  //call google api to get a static map imge of current location.
+  function showPosition(position) {
+      var latlon = position.coords.latitude + "," + position.coords.longitude;
+
+      var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
+      +latlon+"&zoom=14&size=200x150&sensor=false";
+      $("#mapholder").html("<img src='"+img_url+"'>");
+  }
+
+})();
+
+});
 
