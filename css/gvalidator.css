@@ -30,7 +30,7 @@ form.autoform label.checkbox,form.autoform label.radio{width:auto; float:none; d
 
 /* Submit */
 form.autoform div#submitdiv{padding:5px}
-form.autoform input[type="submit"]{float:right;margin-right:20px}
+form.autoform input[type="submit"]{margin-right:20px}
 
 form.autoform .msg, form.autoform .fieldstatus{padding:5px; margin:0 10px}
 form.autoform .fieldstatus{margin:0; cursor:pointer;}

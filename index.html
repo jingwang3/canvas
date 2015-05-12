@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-sm-9">
                     <div class="row">
-                        <canvas id="myCanvas" width="855" height="605">
+                        <canvas id="myCanvas" width="855" height="705" ondrop="drop(event)" ondragover="allowDrop(event)">
                         Your browser does not support the HTML5 canvas tag.
                         </canvas>
                     </div>
@@ -38,37 +38,37 @@
                     <h3>Decorate Your Cake</h3>
                     <div class="row">
                         <div class="col-xs-6">
-                        	<a href="#"><img class="add-candy-btn" src="img/blue_candy.png" alt=""></a>
+                        	<a href="#"><img class="add-candy-btn" src="img/blue_candy.png" alt="blue candy" draggable="true" ondragstart="drag(event)"></a>
     						<p><b>Blue Candy</b></p>
                         </div>
                         <div class="col-xs-6">
-                        	<a href="#"><img class="add-candy-btn" src="img/purple_candy.png" alt=""></a>
+                        	<a href="#"><img class="add-candy-btn" src="img/purple_candy.png" alt="purple candy" draggable="true" ondragstart="drag(event)"></a>
     						<p><b>Purple Candy</b></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6">
-                        	<a href="#"><img class="add-ballon-btn" src="img/ballon.png" alt=""></a>
+                        	<a href="#"><img class="add-ballon-btn" src="img/ballon.png" alt="ballon" draggable="true" ondragstart="drag(event)"></a>
     						<p><b>Ballon</b></p>
                         </div>
                         <div class="col-xs-6">
-                        	<a href="#"><img class="add-candy-btn" src="img/lolli_pop.png" alt=""></a>
+                        	<a href="#"><img class="add-candy-btn" src="img/lolli_pop.png" alt="lollipop" draggable="true" ondragstart="drag(event)"></a>
     						<p><b>Lollipop</b></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6">
-                        	<a href="#"><img class="add-candy-btn" src="img/candle.png" alt=""></a>
+                        	<a href="#"><img class="add-candy-btn" src="img/candle.png" alt="candle" draggable="true" ondragstart="drag(event)"></a>
     						<p><b>Candle</b></p>
                         </div>
                         <div class="col-xs-6">
-                        	<a href="#"><img class="add-candy-btn" src="img/kitkat.png" alt=""></a>
+                        	<a href="#"><img class="add-candy-btn" src="img/kitkat.png" alt="kitkat" draggable="true" ondragstart="drag(event)"></a>
     						<p><b>Chocolate</b></p>
                         </div>
                     </div>
                 </div>               
                 <div class="row">
-                    <div id="mapholder"><button id="findMe">Find Me</button></div>
+                    <div id="mapholder" class="text-center"><button id="findMe">Find Me</button></div>
                 </div>
             </div>
             <div class="row">
@@ -76,7 +76,7 @@
                     <div><label for="name">Name*</label><input type="text" name="name" class="name required" id="firstname2" maxlength="30"></div>
                     <div><label for="email">Email*</label><input type="text" name="email" class="email required" id="email2" maxlength="60"></div>
                     <div><label for="mtext">Comments*</label><textarea type="text" name="mtext" class="text" id="mtext2" maxlength="60"></textarea></div>
-                    <div><input id="submit2" type="submit"><input tabindex="33" type="reset"></div>
+                    <div class="text-center"><input id="submit2" type="submit"><input tabindex="33" type="reset"></div>
                 </form>
             </div>
         </div>
