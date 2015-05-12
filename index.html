@@ -15,6 +15,7 @@
             }
         </style>
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/gvalidator.css">
         <link rel="stylesheet" href="css/main.css">
 
         <!--[if lt IE 9]>
@@ -23,57 +24,69 @@
     </head>
     <body>
         <div class="container">
-            <div class="col-sm-9">
-                <div class="row">
-                    <canvas id="myCanvas" width="855" height="605">
-                    Your browser does not support the HTML5 canvas tag.
-                    </canvas>
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="row">
+                        <canvas id="myCanvas" width="855" height="605">
+                        Your browser does not support the HTML5 canvas tag.
+                        </canvas>
+                    </div>
+                    <div class="row"></div>
                 </div>
-                <div class="row"></div>
-            </div>
-            <div class="col-sm-3 text-center">
-                <img src="img/smiley_face.png" width="48" height="48">
-                <h3>Decorate Your Cake</h3>
-                <div class="row">
-                    <div class="col-xs-6">
-                    	<a href="#"><img class="add-candy-btn" src="img/blue_candy.png" alt=""></a>
-						<p><b>Blue Candy</b></p>
+                <div class="col-sm-3 text-center">
+                    <img src="img/smiley_face.png" width="48" height="48">
+                    <h3>Decorate Your Cake</h3>
+                    <div class="row">
+                        <div class="col-xs-6">
+                        	<a href="#"><img class="add-candy-btn" src="img/blue_candy.png" alt=""></a>
+    						<p><b>Blue Candy</b></p>
+                        </div>
+                        <div class="col-xs-6">
+                        	<a href="#"><img class="add-candy-btn" src="img/purple_candy.png" alt=""></a>
+    						<p><b>Purple Candy</b></p>
+                        </div>
                     </div>
-                    <div class="col-xs-6">
-                    	<a href="#"><img class="add-candy-btn" src="img/purple_candy.png" alt=""></a>
-						<p><b>Purple Candy</b></p>
+                    <div class="row">
+                        <div class="col-xs-6">
+                        	<a href="#"><img class="add-ballon-btn" src="img/ballon.png" alt=""></a>
+    						<p><b>Ballon</b></p>
+                        </div>
+                        <div class="col-xs-6">
+                        	<a href="#"><img class="add-candy-btn" src="img/lolli_pop.png" alt=""></a>
+    						<p><b>Lollipop</b></p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">
-                    	<a href="#"><img class="add-ballon-btn" src="img/ballon.png" alt=""></a>
-						<p><b>Ballon</b></p>
-                    </div>
-                    <div class="col-xs-6">
-                    	<a href="#"><img class="add-candy-btn" src="img/lolli_pop.png" alt=""></a>
-						<p><b>Lollipop</b></p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">
-                    	<a href="#"><img class="add-candy-btn" src="img/candle.png" alt=""></a>
-						<p><b>Candle</b></p>
-                    </div>
-                    <div class="col-xs-6">
-                    	<a href="#"><img class="add-candy-btn" src="img/kitkat.png" alt=""></a>
-						<p><b>Chocolate</b></p>
+                    <div class="row">
+                        <div class="col-xs-6">
+                        	<a href="#"><img class="add-candy-btn" src="img/candle.png" alt=""></a>
+    						<p><b>Candle</b></p>
+                        </div>
+                        <div class="col-xs-6">
+                        	<a href="#"><img class="add-candy-btn" src="img/kitkat.png" alt=""></a>
+    						<p><b>Chocolate</b></p>
+                        </div>
                     </div>
                 </div>               
                 <div class="row">
                     <div id="mapholder"><button id="findMe">Find Me</button></div>
                 </div>
             </div>
+            <div class="row">
+                <form action="" method="post" id="example-normal-form" class="autoform">
+                    <div><label for="name">Name*</label><input type="text" name="name" class="name required" id="firstname2" maxlength="30"></div>
+                    <div><label for="email">Email*</label><input type="text" name="email" class="email required" id="email2" maxlength="60"></div>
+                    <div><label for="mtext">Comments*</label><textarea type="text" name="mtext" class="text" id="mtext2" maxlength="60"></textarea></div>
+                    <div><input id="submit2" type="submit"><input tabindex="33" type="reset"></div>
+                </form>
+            </div>
         </div>
       <!-- /container -->        
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+      <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
       <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
-      <script src="js/vendor/bootstrap.min.js"></script>
-      <script src="js/vendor/easeljs-0.8.0.min.js"></script>
-      <script src="js/main.js"></script>
+      <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
+      <script type="text/javascript" src="js/vendor/easeljs-0.8.0.min.js"></script>
+      <script type="text/javascript" src="js/vendor/gvalidator.min.js" defer="defer"></script>
+      <script type="text/javascript" src="js/vendor/gvalidator-config.js" defer="defer"></script>
+      <script type="text/javascript" src="js/main.js"></script>
     </body>
 </html>
