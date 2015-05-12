@@ -5,7 +5,8 @@ var canvas, stage;
 var mouseTarget;  // the display object currently under the mouse, or being dragged
 var dragStarted;  // indicates whether we are currently in a drag operation
 var offset;
-var update = true;
+//var update = true;
+var ballons = [];
 
 var init = function() {
   // create stage and point it to the canvas:
@@ -24,30 +25,18 @@ var init = function() {
   var bdCake = new Image();
   bdCake.src = "img/b_cake.png";
   var cakeBmp;
-
-    cakeBmp = new createjs.Bitmap(bdCake);
-    stage.addChild(cakeBmp);
-    cakeBmp.x = 0;
-    cakeBmp.y = 0;
-    cakeBmp.name = 'BD_Cake';
-
+  cakeBmp = new createjs.Bitmap(bdCake);
+  console.log(cakeBmp);
+  stage.addChild(cakeBmp);
+  cakeBmp.x = 200;
+  cakeBmp.y = 70;
+  cakeBmp.name = 'BD_Cake';
+  createjs.Ticker.setFPS(30);
   createjs.Ticker.addEventListener("tick", tick);
 }();
 
 function stop() {
   createjs.Ticker.removeEventListener("tick", tick);
-}
-
-function loadStillImg(img, title, posX, posY) {
-  var bitmap;
-
-    bitmap = new createjs.Bitmap(img);
-    stage.addChild(bitmap);
-    bitmap.x = posX | 0;
-    bitmap.y = posY | 0;
-    bitmap.name = title;
-
-  createjs.Ticker.addEventListener("tick", tick);
 }
 
 
@@ -60,9 +49,8 @@ var addCandy = function(imgSrc) {
   //for (var i = 0; i < 3; i++) {
     bitmap = new createjs.Bitmap(img);
     stage.addChild(bitmap);
-    console.log(stage);
-    bitmap.x = 0;
-    bitmap.y = 0;
+    bitmap.x = stage.canvas.width/2;
+    bitmap.y = stage.canvas.height/2;
     // bitmap.rotation = 360 * Math.random() | 0;
     // bitmap.regX = bitmap.image.width / 2 | 0;
     // bitmap.regY = bitmap.image.height / 2 | 0;
@@ -82,35 +70,101 @@ var addCandy = function(imgSrc) {
       this.x = evt.stageX + this.offset.x;
       this.y = evt.stageY + this.offset.y;
       // indicate that the stage should be updated on the next tick:
-      update = true;
+      //update = true;
     });
 
     bitmap.on("rollover", function (evt) {
       this.scaleX = this.scaleY = this.scale * 1.2;
-      update = true;
+      //update = true;
     });
 
     bitmap.on("rollout", function (evt) {
       this.scaleX = this.scaleY = this.scale;
-      update = true;
+      //update = true;
     });
-
   //}
-
+  createjs.Ticker.setFPS(30);
   createjs.Ticker.addEventListener("tick", tick);
-  update = true;
+  //update = true;
+}
+
+var addBallon = function() {
+  var img = new Image();
+  var r = Math.random() * 3;
+  if(r > 2){
+    img.src = 'img/ballon.png';
+  }else if(r > 1){
+    img.src = 'img/brown_ballon.png';
+  }else{
+    img.src = 'img/pink_ballon.png';
+  }
+
+  var bitmap;
+
+  // create and populate the screen with random daisies:
+  //for (var i = 0; i < 3; i++) {
+    bitmap = new createjs.Bitmap(img);
+    ballons.push(bitmap);
+    stage.addChild(bitmap);
+    console.log(stage);
+    bitmap.x = Math.random() * stage.canvas.width;
+    bitmap.y = Math.random() * 30 + stage.canvas.height;
+    bitmap.ind = stage.children.length;
+    // bitmap.rotation = 360 * Math.random() | 0;
+    // bitmap.regX = bitmap.image.width / 2 | 0;
+    // bitmap.regY = bitmap.image.height / 2 | 0;
+    //bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+    bitmap.name = 'ballon_'+stage.children.length;
+    // bitmap.cursor = "pointer";
+
+    // // using "on" binds the listener to the scope of the currentTarget by default
+    // // in this case that means it executes in the scope of the button.
+    // bitmap.on("mousedown", function (evt) {
+    //   this.parent.addChild(this);
+    //   this.offset = {x: this.x - evt.stageX, y: this.y - evt.stageY};
+    // });
+
+    // // the pressmove event is dispatched when the mouse moves after a mousedown on the target until the mouse is released.
+    // bitmap.on("pressmove", function (evt) {
+    //   this.x = evt.stageX + this.offset.x;
+    //   this.y = evt.stageY + this.offset.y;
+    //   // indicate that the stage should be updated on the next tick:
+    //   //update = true;
+    // });
+
+    // bitmap.on("rollover", function (evt) {
+    //   this.scaleX = this.scaleY = this.scale * 1.2;
+    //   //update = true;
+    // });
+
+    // bitmap.on("rollout", function (evt) {
+    //   this.scaleX = this.scaleY = this.scale;
+    //   //update = true;
+    // });
+  //}
+  createjs.Ticker.setFPS(30);
+  createjs.Ticker.addEventListener("tick", tick);
 }
 
 function tick(event) {
   // this set makes it so the stage only re-renders when an event handler indicates a change has happened.
-   if (update) {
-     update = false; // only update once
-    stage.update(event);
-   }
+  stage.update(event);
+  for (var i = ballons.length - 1; i >= 0; i--) {
+    if(ballons[i].y >= -20){
+      ballons[i].y--;
+    }else{
+      ballons[i].removeAllEventListeners();
+      ballons[i].visible = false;
+    }
+  };
 }
 
 $('.add-candy-btn').on('click', function(e){
   addCandy(this.src);
+});
+
+$('.add-ballon-btn').on('click', function(e){
+  addBallon();
 });
 
 
