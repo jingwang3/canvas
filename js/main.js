@@ -23,13 +23,13 @@ var init = function() {
 
   // load the source image:
   var bdCake = new Image();
-  bdCake.src = "img/b_cake.png";
+  bdCake.src = "img/cake.png";
   var cakeBmp;
   cakeBmp = new createjs.Bitmap(bdCake);
   console.log(cakeBmp);
   stage.addChild(cakeBmp);
-  cakeBmp.x = 200;
-  cakeBmp.y = 70;
+  cakeBmp.x = canvas.width/2 - 480/2;
+  cakeBmp.y = canvas.height - 338;
   cakeBmp.name = 'BD_Cake';
   createjs.Ticker.setFPS(30);
   createjs.Ticker.addEventListener("tick", tick);
