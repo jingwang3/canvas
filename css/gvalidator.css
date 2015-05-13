@@ -1,5 +1,4 @@
-/* General */
-body{margin:20px 40px}
+
 
 /* Auto Form */
 .hidden{display:none}
@@ -17,7 +16,7 @@ form.autoform .msg.icon{padding:5px 5px 5px 30px; margin:0 10px; position:absolu
 form.autoform span.error.icon{background:#FFF6CF url(img/icons/icon_alert.gif) 7px center no-repeat; display:inline}
 form.autoform span.ok.icon{background:#D7FFCF url(img/icons/tick.png) 7px center  no-repeat; display:inline}
 form.autoform span.info.icon{background:#DFF0FF url(img/icons/help.png) 7px center no-repeat; display:inline}
-form.autoform label{width:220px; display:block; float:left;}
+form.autoform label{width:20%; display:block; float:left;}
 form.autoform span.required{float:left}
 
 /* Inputs */

@@ -7,6 +7,15 @@
     background-color: pink;
 }
 
+.main-content{
+	overflow: hidden;
+	width: 100%;
+}
+
+#mapholder{
+	padding: 20px;
+}
+
 
 
 

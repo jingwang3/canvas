@@ -23,11 +23,14 @@ var canvas, stage;
 var mouseTarget;  // the display object currently under the mouse, or being dragged
 var dragStarted;  // indicates whether we are currently in a drag operation
 var offset;
+var scaleRateX = $(window).width() / 1024;
+var scaleRateY = $(window).height() / 768;
 var ballons = [];
+var buttons = ['blue_candy', 'purple_candy', 'lollipop', 'candle', 'kitkat'];
 
 var init = function() {
   // create stage and point it to the canvas:
-  $('#myCanvas').attr('width', 855).attr('height', 705); //set canvas size
+  $('#myCanvas').attr('width', scaleRateX * 1024).attr('height', scaleRateY * 768); //set canvas size
   canvas = document.getElementById("myCanvas");
   stage = new createjs.Stage(canvas);
 
@@ -38,6 +41,14 @@ var init = function() {
   stage.enableMouseOver(10);
   stage.mouseMoveOutside = true; // keep tracking the mouse even when it leaves the canvas
 
+  if(scaleRateX > 1){
+    scaleRateX = 1;
+  }
+
+  if(scaleRateY > 1){
+    scaleRateY = 1;
+  }
+
   // load the source images:
   // add cake
   var bdCake = new Image();
@@ -45,8 +56,9 @@ var init = function() {
   var cakeBmp;
   cakeBmp = new createjs.Bitmap(bdCake);
   stage.addChild(cakeBmp);
-  cakeBmp.x = canvas.width/2 - 480/2;
-  cakeBmp.y = canvas.height - 338;
+  cakeBmp.x = canvas.width/2 - 480*scaleRateX/2;
+  cakeBmp.y = canvas.height - 338*scaleRateY;
+
   cakeBmp.name = 'BD_Cake';
 
   // add music note btn
@@ -61,7 +73,7 @@ var init = function() {
   mnBmp.cursor = "pointer";
   mnBmp.scaleX = mnBmp.scaleY = mnBmp.scale = 1;
   var snd = new Audio("sound/easy_loop.mp3"); // buffers automatically when created
-  mnBmp.on("mousedown", function (evt) {
+  mnBmp.on("click", function (evt) {
     if(snd.currentTime > 0){
       snd.pause();
       snd.currentTime = 0;
@@ -76,6 +88,21 @@ var init = function() {
     }
   });
 
+  // add ballon icon
+  var ballonIcon = new Image();
+  ballonIcon.src = "img/ballon.png";
+  var balBmp;
+  balBmp = new createjs.Bitmap(ballonIcon);
+  stage.addChild(balBmp);
+  balBmp.x = 20;
+  balBmp.y = 80;
+  balBmp.name = 'Ballon';
+  balBmp.cursor = "pointer";
+  balBmp.scaleX = balBmp.scaleY = balBmp.scale = 1;
+  balBmp.on("click", function (evt) {
+    addBallon();
+  });
+
   // add reset btn
   var resetBtn = new Image();
   resetBtn.src = "img/reset.png";
@@ -87,23 +114,81 @@ var init = function() {
   resetBmp.name = 'Reset_Btn';
   resetBmp.cursor = "pointer";
   resetBmp.scaleX = resetBmp.scaleY = resetBmp.scale = 1;
-  resetBmp.on("mousedown", function (evt) {
-    for (var i = stage.children.length - 1; i >= 3; i--) {
+  resetBmp.on("click", function (evt) {
+    for (var i = stage.children.length - 1; i >= 9; i--) {
       stage.children[i].removeAllEventListeners();
       stage.children[i].visible = false;
     };
   });
 
+
+  setupUI();
+
   createjs.Ticker.setFPS(30);
   createjs.Ticker.addEventListener("tick", tick);
-}();
+};
+
+function setupUI(){
+  // create and populate the screen with random daisies:
+  for (var i = 0; i < buttons.length; i++) {
+    var img = new Image();
+    img.src = 'img/'+buttons[i]+'.png';
+    var bitmap;
+    bitmap = new createjs.Bitmap(img);
+    stage.addChild(bitmap);
+    bitmap.x = 10;
+    bitmap.y = i*40 + 140;
+    bitmap.imgUrl = img.src;
+    // bitmap.rotation = 360 * Math.random() | 0;
+    // bitmap.regX = bitmap.image.width / 2 | 0;
+    // bitmap.regY = bitmap.image.height / 2 | 0;
+    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+    bitmap.name = buttons[i]+'_'+stage.children.length;
+    bitmap.cursor = "pointer";
+
+    // using "on" binds the listener to the scope of the currentTarget by default
+    // in this case that means it executes in the scope of the button.
+    bitmap.on("mousedown", function (evt) {
+      this.prevX = this.x;
+      this.prevY = this.y;
+      //this.parent.addChild(this);
+      this.offset = {x: this.x - evt.stageX, y: this.y - evt.stageY};
+    });
+
+    // the pressmove event is dispatched when the mouse moves after a mousedown on the target until the mouse is released.
+    bitmap.on("pressmove", function (evt) {
+      this.x = evt.stageX + this.offset.x;
+      this.y = evt.stageY + this.offset.y;
+    });
+
+    bitmap.on("pressup", function (evt) {
+     addCandy(evt.target.imgUrl, evt.stageX, evt.stageY);
+     this.x = this.prevX;
+     this.y = this.prevY;
+    });
+
+    bitmap.on("rollover", function (evt) {
+      this.scaleX = this.scaleY = this.scale * 1.2;
+      
+    });
+
+    bitmap.on("rollout", function (evt) {
+      this.scaleX = this.scaleY = this.scale;
+      
+    });
+  }
+  createjs.Ticker.setFPS(30);
+  createjs.Ticker.addEventListener("tick", tick);
+  
+}
+
 
 function stop() {
   createjs.Ticker.removeEventListener("tick", tick);
 }
 
 
-var addCandy = function(imgSrc) {
+var addCandy = function(imgSrc, posX, poxY) {
   var img = new Image();
   img.src = imgSrc;
   var bitmap;
@@ -112,8 +197,8 @@ var addCandy = function(imgSrc) {
   //for (var i = 0; i < 3; i++) {
     bitmap = new createjs.Bitmap(img);
     stage.addChild(bitmap);
-    bitmap.x = stage.canvas.width/2;
-    bitmap.y = stage.canvas.height/2;
+    bitmap.x = posX;
+    bitmap.y = poxY;
     // bitmap.rotation = 360 * Math.random() | 0;
     // bitmap.regX = bitmap.image.width / 2 | 0;
     // bitmap.regY = bitmap.image.height / 2 | 0;
@@ -131,9 +216,7 @@ var addCandy = function(imgSrc) {
     // the pressmove event is dispatched when the mouse moves after a mousedown on the target until the mouse is released.
     bitmap.on("pressmove", function (evt) {
       this.x = evt.stageX + this.offset.x;
-      this.y = evt.stageY + this.offset.y;
-      // indicate that the stage should be updated on the next tick:
-      
+      this.y = evt.stageY + this.offset.y;      
     });
 
     bitmap.on("rollover", function (evt) {
@@ -229,6 +312,32 @@ $('.add-ballon-btn').on('click', function(e){
 
 })();
 
+$(document).ready(function(){
 
+  var adjustStage = function (){
+    var rate;
+    scaleRateX = $(window).width() / 1024;
+    scaleRateY = $(window).height() / 768;
+    if(scaleRateY > scaleRateX){
+      rate = scaleRateX;
+    }else{
+      rate = scaleRateY;
+    }
+    $('#myCanvas').attr('width', scaleRateX * 1024).attr('height', scaleRateY * 768);
+    for (var i = stage.children.length - 1; i >= 0; i--) {
+      if(scaleRateY <= 1 || scaleRateX <= 1){
+        stage.children[i].scaleX = stage.children[i].scaleY = rate;
+      }
+    };
+  }
+
+  $( window ).resize(function() {
+    adjustStage();
+  });
+
+  init();
+  adjustStage();
+
+});
 
 
