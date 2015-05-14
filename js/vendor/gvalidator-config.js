@@ -4,7 +4,7 @@ ONEGEEK.forms.GValidator.options = {
     reqShow: true,            // Automatically add the required char to labels?
     reqChar: '*',             // Character used to indicate a required field
     reqPlacement: 'after',    // Position of required character. Can be 'before' or 'after'
-    autoFocus: true,          // Automatically focus the first form element on page load
+    autoFocus: false,          // Automatically focus the first form element on page load
     supressAlert: false,      // Supresses the javascript alert on an invalid form submission 
     highlightFields: 'highlight',    // Will apply a class name of 'highlight' to any invalid field on form submission attempt.    
     

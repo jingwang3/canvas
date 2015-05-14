@@ -4,7 +4,7 @@
    Author's custom styles
    ========================================================================== */
 #myCanvas{
-    background-color: pink;
+    background-color: #B9FF97;
 }
 
 .main-content{
@@ -13,7 +13,7 @@
 }
 
 #mapholder{
-	padding: 20px;
+	padding: 10px;
 }
 
 

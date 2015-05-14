@@ -26,7 +26,43 @@ var offset;
 var scaleRateX = $(window).width() / 1024;
 var scaleRateY = $(window).height() / 768;
 var ballons = [];
-var buttons = ['blue_candy', 'purple_candy', 'lollipop', 'candle', 'kitkat'];
+var buttons = ['blue_candy', 'green_candy', 'lollypop', 'candle', 'kitkat'];
+
+function drawSmilyFace(){
+  var canvas = document.getElementById('smileyFace');
+  var context = canvas.getContext('2d');
+  var centerX = canvas.width / 2;
+  var centerY = canvas.height / 2;
+  var radius = 60;
+  var eyeRadius = 8;
+  var eyeXOffset = 25;
+  var eyeYOffset = 20;
+  
+  // draw the yellow circle
+  context.beginPath();
+  context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+  context.fillStyle = 'yellow';
+  context.fill();
+  context.lineWidth = 5;
+  context.strokeStyle = 'black';
+  context.stroke();
+    
+  // draw the eyes
+  context.beginPath();
+  var eyeX = centerX - eyeXOffset;
+  var eyeY = centerY - eyeXOffset;
+  context.arc(eyeX, eyeY, eyeRadius, 0, 2 * Math.PI, false);
+  var eyeX = centerX + eyeXOffset;
+  context.arc(eyeX, eyeY, eyeRadius, 0, 2 * Math.PI, false);
+  context.fillStyle = 'black';
+  context.fill();
+  
+  // draw the mouth
+  context.beginPath();
+  context.arc(centerX, centerY, 30, 0, Math.PI, false);
+  context.stroke();
+
+}
 
 var init = function() {
   // create stage and point it to the canvas:
@@ -49,17 +85,36 @@ var init = function() {
     scaleRateY = 1;
   }
 
-  // load the source images:
-  // add cake
-  var bdCake = new Image();
-  bdCake.src = "img/cake.png";
-  var cakeBmp;
-  cakeBmp = new createjs.Bitmap(bdCake);
-  stage.addChild(cakeBmp);
-  cakeBmp.x = canvas.width/2 - 480*scaleRateX/2;
-  cakeBmp.y = canvas.height - 338*scaleRateY;
+   //draw box
+   // can use the graphics property of the Shape class to renderer the same as above.
+   var toolBar = new createjs.Shape();
+   toolBar.graphics.beginFill("black").drawRect(0, 0, 100, $(window).height());
+   stage.addChild(toolBar);
 
-  cakeBmp.name = 'BD_Cake';
+   //draw decorate cake text
+   var text = new createjs.Text("Decorate Your Cake", "25px Arial", "#000000");
+   text.x = 110;
+   text.y = 40;
+   text.textBaseline = "alphabetic";
+   stage.addChild(text);
+
+  // add reset btn
+  var resetBtn = new Image();
+  resetBtn.src = "img/reset.png";
+  var resetBmp;
+  resetBmp = new createjs.Bitmap(resetBtn);
+  stage.addChild(resetBmp);
+  resetBmp.x = canvas.width - 20 - 48;
+  resetBmp.y = 20;
+  resetBmp.name = 'Reset_Btn';
+  resetBmp.cursor = "pointer";
+  resetBmp.scaleX = resetBmp.scaleY = resetBmp.scale = 1;
+  resetBmp.on("click", function (evt) {
+    for (var i = stage.children.length - 1; i >= 9; i--) {
+      stage.children[i].removeAllEventListeners();
+      stage.children[i].visible = false;
+    };
+  });
 
   // add music note btn
   var musicNote = new Image();
@@ -67,7 +122,7 @@ var init = function() {
   var mnBmp;
   mnBmp = new createjs.Bitmap(musicNote);
   stage.addChild(mnBmp);
-  mnBmp.x = 20;
+  mnBmp.x = canvas.width - 40 - 80;
   mnBmp.y = 20;
   mnBmp.name = 'Music_Note';
   mnBmp.cursor = "pointer";
@@ -88,14 +143,25 @@ var init = function() {
     }
   });
 
+  // add cake
+  var bdCake = new Image();
+  bdCake.src = "img/cake.png";
+  var cakeBmp;
+  cakeBmp = new createjs.Bitmap(bdCake);
+  stage.addChild(cakeBmp);
+  cakeBmp.x = canvas.width/2 - 480*scaleRateX/2;
+  cakeBmp.y = canvas.height*0.77 - 338*scaleRateY;
+  cakeBmp.name = 'BD_Cake';
+
+
   // add ballon icon
   var ballonIcon = new Image();
-  ballonIcon.src = "img/ballon.png";
+  ballonIcon.src = "img/icons/large/ballon.png";
   var balBmp;
   balBmp = new createjs.Bitmap(ballonIcon);
   stage.addChild(balBmp);
-  balBmp.x = 20;
-  balBmp.y = 80;
+  balBmp.x = 10;
+  balBmp.y = 60;
   balBmp.name = 'Ballon';
   balBmp.cursor = "pointer";
   balBmp.scaleX = balBmp.scaleY = balBmp.scale = 1;
@@ -103,25 +169,7 @@ var init = function() {
     addBallon();
   });
 
-  // add reset btn
-  var resetBtn = new Image();
-  resetBtn.src = "img/reset.png";
-  var resetBmp;
-  resetBmp = new createjs.Bitmap(resetBtn);
-  stage.addChild(resetBmp);
-  resetBmp.x = canvas.width - 20 - 48;
-  resetBmp.y = 20;
-  resetBmp.name = 'Reset_Btn';
-  resetBmp.cursor = "pointer";
-  resetBmp.scaleX = resetBmp.scaleY = resetBmp.scale = 1;
-  resetBmp.on("click", function (evt) {
-    for (var i = stage.children.length - 1; i >= 9; i--) {
-      stage.children[i].removeAllEventListeners();
-      stage.children[i].visible = false;
-    };
-  });
-
-
+  // add rest of the buttons
   setupUI();
 
   createjs.Ticker.setFPS(30);
@@ -132,12 +180,12 @@ function setupUI(){
   // create and populate the screen with random daisies:
   for (var i = 0; i < buttons.length; i++) {
     var img = new Image();
-    img.src = 'img/'+buttons[i]+'.png';
+    img.src = 'img/icons/large/'+buttons[i]+'.png';
     var bitmap;
     bitmap = new createjs.Bitmap(img);
     stage.addChild(bitmap);
     bitmap.x = 10;
-    bitmap.y = i*40 + 140;
+    bitmap.y = i*65 + 130;
     bitmap.imgUrl = img.src;
     // bitmap.rotation = 360 * Math.random() | 0;
     // bitmap.regX = bitmap.image.width / 2 | 0;
@@ -177,6 +225,8 @@ function setupUI(){
       
     });
   }
+
+
   createjs.Ticker.setFPS(30);
   createjs.Ticker.addEventListener("tick", tick);
   
@@ -252,7 +302,7 @@ var addBallon = function() {
     ballons.push(bitmap);
     stage.addChild(bitmap);
     console.log(stage);
-    bitmap.x = Math.random() * stage.canvas.width;
+    bitmap.x = Math.random() * (stage.canvas.width - 180) + 100;
     bitmap.y = Math.random() * 30 + stage.canvas.height;
     bitmap.ind = stage.children.length;
 
@@ -337,7 +387,8 @@ $(document).ready(function(){
 
   init();
   adjustStage();
-
+  drawSmilyFace();
 });
+
 
 
