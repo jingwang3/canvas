@@ -7,6 +7,13 @@
     background-color: #B9FF97;
 }
 
+@media (max-width: 600px) {
+	#myCanvas{
+	    background-color: blue;
+	}
+}
+
+
 .main-content{
 	overflow: hidden;
 	width: 100%;
@@ -16,7 +23,15 @@
 	padding: 10px;
 }
 
+.navbar {
+  margin-bottom: 0;
 
+}
+
+form{
+  border-radius: 10px;
+  box-shadow: 0 1px 10px #000;
+}
 
 
 

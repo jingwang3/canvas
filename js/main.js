@@ -1,22 +1,4 @@
-
-// add functions to allow drag and drap;
-function allowDrop(ev) {
-    ev.preventDefault();
-}
-function drag(ev) {
-    ev.dataTransfer.setData("src", ev.target.src);
-}
-function drop(ev) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("src");
-    if(data.indexOf('ballon.png') > -1){
-      addBallon();
-    }else{
-      addCandy(data);
-    }
-    
-}
-
+"use strict";
 
 var canvas, stage;
 
@@ -69,6 +51,7 @@ var init = function() {
   $('#myCanvas').attr('width', scaleRateX * 1024).attr('height', scaleRateY * 768); //set canvas size
   canvas = document.getElementById("myCanvas");
   stage = new createjs.Stage(canvas);
+  
 
   // enable touch interactions if supported on the current device:
   createjs.Touch.enable(stage);
@@ -88,12 +71,13 @@ var init = function() {
    //draw box
    // can use the graphics property of the Shape class to renderer the same as above.
    var toolBar = new createjs.Shape();
-   toolBar.graphics.beginFill("black").drawRect(0, 0, 100, $(window).height());
+   console.log(stage.canvas.height);
+   toolBar.graphics.beginFill("black").drawRect(0, 0, 130, window.height);
    stage.addChild(toolBar);
 
    //draw decorate cake text
    var text = new createjs.Text("Decorate Your Cake", "25px Arial", "#000000");
-   text.x = 110;
+   text.x = 130;
    text.y = 40;
    text.textBaseline = "alphabetic";
    stage.addChild(text);
@@ -110,7 +94,7 @@ var init = function() {
   resetBmp.cursor = "pointer";
   resetBmp.scaleX = resetBmp.scaleY = resetBmp.scale = 1;
   resetBmp.on("click", function (evt) {
-    for (var i = stage.children.length - 1; i >= 9; i--) {
+    for (var i = stage.children.length - 1; i >= 11; i--) {
       stage.children[i].removeAllEventListeners();
       stage.children[i].visible = false;
     };
@@ -164,7 +148,7 @@ var init = function() {
   balBmp.y = 60;
   balBmp.name = 'Ballon';
   balBmp.cursor = "pointer";
-  balBmp.scaleX = balBmp.scaleY = balBmp.scale = 1;
+  //balBmp.scaleX = balBmp.scaleY = balBmp.scale = 1;
   balBmp.on("click", function (evt) {
     addBallon();
   });
@@ -183,14 +167,12 @@ function setupUI(){
     img.src = 'img/icons/large/'+buttons[i]+'.png';
     var bitmap;
     bitmap = new createjs.Bitmap(img);
+    bitmap.drawSrc = 'img/icons/large/obj_'+buttons[i]+'.png';
     stage.addChild(bitmap);
     bitmap.x = 10;
-    bitmap.y = i*65 + 130;
+    bitmap.y = i*135*scaleRateY;
     bitmap.imgUrl = img.src;
-    // bitmap.rotation = 360 * Math.random() | 0;
-    // bitmap.regX = bitmap.image.width / 2 | 0;
-    // bitmap.regY = bitmap.image.height / 2 | 0;
-    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+    bitmap.scaleX = bitmap.scaleY = bitmap.scale = scaleRateY;
     bitmap.name = buttons[i]+'_'+stage.children.length;
     bitmap.cursor = "pointer";
 
@@ -199,7 +181,6 @@ function setupUI(){
     bitmap.on("mousedown", function (evt) {
       this.prevX = this.x;
       this.prevY = this.y;
-      //this.parent.addChild(this);
       this.offset = {x: this.x - evt.stageX, y: this.y - evt.stageY};
     });
 
@@ -210,18 +191,18 @@ function setupUI(){
     });
 
     bitmap.on("pressup", function (evt) {
-     addCandy(evt.target.imgUrl, evt.stageX, evt.stageY);
+     addCandy(evt.target.drawSrc, evt.stageX, evt.stageY);
      this.x = this.prevX;
      this.y = this.prevY;
     });
 
     bitmap.on("rollover", function (evt) {
-      this.scaleX = this.scaleY = this.scale * 1.2;
+      //this.scaleX = this.scaleY = this.scale * 1.2;
       
     });
 
     bitmap.on("rollout", function (evt) {
-      this.scaleX = this.scaleY = this.scale;
+      //this.scaleX = this.scaleY = this.scale;
       
     });
   }
@@ -237,7 +218,7 @@ function stop() {
   createjs.Ticker.removeEventListener("tick", tick);
 }
 
-
+//function with parameter to receive the image source and current mouse position
 var addCandy = function(imgSrc, posX, poxY) {
   var img = new Image();
   img.src = imgSrc;
@@ -363,7 +344,7 @@ $('.add-ballon-btn').on('click', function(e){
 })();
 
 $(document).ready(function(){
-
+  //control size of canvas to fit on screen
   var adjustStage = function (){
     var rate;
     scaleRateX = $(window).width() / 1024;
