@@ -355,9 +355,12 @@ $(document).ready(function(){
     };
   }
 
-  // $( window ).resize(function() {
-  //   adjustStage();
-  // });
+  $( window ).resize(function() {
+        stage.children = [];
+        init();
+        adjustStage();
+        drawSmilyFace();
+  });
 
   init();
   adjustStage();
