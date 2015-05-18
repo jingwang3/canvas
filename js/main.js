@@ -68,19 +68,23 @@ var init = function() {
     scaleRateY = 1;
   }
 
-   //draw box
-   // can use the graphics property of the Shape class to renderer the same as above.
-   var toolBar = new createjs.Shape();
-   console.log(stage.canvas.height);
-   toolBar.graphics.beginFill("black").drawRect(0, 0, 130, window.height);
-   stage.addChild(toolBar);
+  // add cake
+  var bdCake = new Image();
+  bdCake.src = "img/cake.png";
+  var cakeBmp;
+  cakeBmp = new createjs.Bitmap(bdCake);
+  stage.addChild(cakeBmp);
+  cakeBmp.x = canvas.width/2 - 480*scaleRateX/2;
+  cakeBmp.y = canvas.height*0.77 - 338*scaleRateY;
+  cakeBmp.name = 'BD_Cake';
 
-   //draw decorate cake text
-   var text = new createjs.Text("Decorate Your Cake", "25px Arial", "#000000");
-   text.x = 130;
-   text.y = 40;
-   text.textBaseline = "alphabetic";
-   stage.addChild(text);
+  //draw decorate cake text
+  var text = new createjs.Text("Decorate Your Cake", "25px Arial", "#000000");
+  text.x = 0;
+  text.y = canvas.height - 5;
+  text.textBaseline = "alphabetic";
+  console.log(text);
+  stage.addChild(text);
 
   // add reset btn
   var resetBtn = new Image();
@@ -94,7 +98,7 @@ var init = function() {
   resetBmp.cursor = "pointer";
   resetBmp.scaleX = resetBmp.scaleY = resetBmp.scale = 1;
   resetBmp.on("click", function (evt) {
-    for (var i = stage.children.length - 1; i >= 11; i--) {
+    for (var i = stage.children.length - 1; i >= 10; i--) {
       stage.children[i].removeAllEventListeners();
       stage.children[i].visible = false;
     };
@@ -127,28 +131,17 @@ var init = function() {
     }
   });
 
-  // add cake
-  var bdCake = new Image();
-  bdCake.src = "img/cake.png";
-  var cakeBmp;
-  cakeBmp = new createjs.Bitmap(bdCake);
-  stage.addChild(cakeBmp);
-  cakeBmp.x = canvas.width/2 - 480*scaleRateX/2;
-  cakeBmp.y = canvas.height*0.77 - 338*scaleRateY;
-  cakeBmp.name = 'BD_Cake';
-
-
   // add ballon icon
   var ballonIcon = new Image();
   ballonIcon.src = "img/icons/large/ballon.png";
   var balBmp;
   balBmp = new createjs.Bitmap(ballonIcon);
   stage.addChild(balBmp);
-  balBmp.x = 10;
-  balBmp.y = 60;
+  balBmp.x = 80;;
+  balBmp.y = 0;
   balBmp.name = 'Ballon';
   balBmp.cursor = "pointer";
-  //balBmp.scaleX = balBmp.scaleY = balBmp.scale = 1;
+  balBmp.scaleX = balBmp.scaleY = balBmp.scale = 1;
   balBmp.on("click", function (evt) {
     addBallon();
   });
@@ -362,9 +355,9 @@ $(document).ready(function(){
     };
   }
 
-  $( window ).resize(function() {
-    adjustStage();
-  });
+  // $( window ).resize(function() {
+  //   adjustStage();
+  // });
 
   init();
   adjustStage();
